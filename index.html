@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Mohamed Ibrahim — Web Interface Developer</title>
+
+  <!-- Fonts: Cinzel for the main name (English), Cairo for Arabic content -->
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --gold-1:#ffd97a;
+      --gold-2:#d4af37;
+      --gold-3:#b8860b;
+      --bg:#070707;
+      --card:#0f0f10;
+      --muted:#cfcfcf;
+      --glass:rgba(255,255,255,0.03);
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family: 'Cairo', system-ui, -apple-system, 'Segoe UI', Roboto, Arial;
+      background:var(--bg);
+      color:#eee;
+      direction:rtl;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      min-height:100vh;
+      overflow-y:auto;
+    }
+
+    /* ===== Animated code background ===== */
+    .bg-wrap{
+      position:fixed;inset:0;z-index:0;pointer-events:none;
+      background-color:#070707;
+      overflow:hidden;
+      font-family:monospace;
+      color:var(--gold-2);
+      font-size:12px;
+      line-height:1.2em;
+    }
+    .code-line{
+      white-space:nowrap;
+      position:absolute;
+      top:0;
+      animation: moveCode linear infinite;
+    }
+    @keyframes moveCode{
+      0% {transform: translateY(-100%);}
+      100% {transform: translateY(100%);}
+    }
+
+    /* container */
+    .container{position:relative;z-index:2;max-width:1100px;margin:0 auto;padding:36px 18px 90px;}
+
+    /* NAV */
+    .nav{
+      position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:40;
+      display:flex;gap:10px;align-items:center;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      padding:8px 12px;border-radius:999px;border:1px solid rgba(255,255,255,0.03);backdrop-filter: blur(6px);
+      box-shadow:0 8px 30px rgba(0,0,0,0.6);
+    }
+    .nav .brand{font-weight:800;color:var(--gold-2);padding:6px 10px;border-radius:999px;border:1px solid rgba(212,175,55,0.08);font-family:'Cinzel',serif}
+    .nav a{color:var(--muted);text-decoration:none;padding:8px 12px;border-radius:999px;font-weight:700;font-size:14px;transition:all .24s}
+    .nav a:hover{color:var(--gold-2);transform:translateY(-3px)}
+
+    /* progress bar */
+    #progress{position:fixed;top:0;left:0;height:4px;background:linear-gradient(90deg,var(--gold-1),var(--gold-2));width:0%;z-index:50;border-bottom-left-radius:4px;border-bottom-right-radius:4px}
+
+    /* Header card */
+    .header-card{
+      margin-top:72px;background:linear-gradient(180deg,var(--card),#0b0b0b);border-radius:20px;padding:34px;display:flex;gap:28px;align-items:center;
+      box-shadow:0 30px 70px rgba(0,0,0,0.75);border:1px solid rgba(255,255,255,0.03);
+    }
+    .avatar{width:150px;height:150px;border-radius:999px;overflow:hidden;flex-shrink:0;border:5px solid rgba(212,175,55,0.12);display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#0f0f0f,#0b0b0b)}
+    .avatar img{width:100%;height:100%;object-fit:cover;display:block}
+    .avatar-fallback{font-size:56px;color:var(--gold-2);font-weight:900;font-family:'Cinzel',serif}
+
+    .title{flex:1;text-align:right}
+    .title h1{margin:0;font-family:'Cinzel',serif;font-size:42px;letter-spacing:1px;color:#fff;font-weight:900}
+    @media(min-width:1024px){ .title h1 { font-size:56px } }
+    .title .subtitle{display:block;margin-top:6px;color:var(--gold-2);font-weight:700}
+    .title p{margin-top:14px;color:#d6d6d6;max-width:900px;line-height:1.8}
+    .actions{display:flex;gap:12px;justify-content:flex-end;margin-top:18px}
+    .btn{padding:10px 14px;border-radius:999px;font-weight:800;border:1px solid rgba(212,175,55,0.08);background:transparent;color:var(--muted);cursor:pointer;transition:all .22s;letter-spacing:.4px}
+    .btn.gold{background:linear-gradient(90deg,var(--gold-1),var(--gold-2));color:#0b0b0b;border:none;box-shadow:0 10px 30px rgba(212,175,55,0.12)}
+    .btn:hover{transform:translateY(-3px)}
+
+    /* layout */
+    .grid{display:grid;grid-template-columns:1fr;gap:24px;margin-top:28px}
+    @media(min-width:1024px){ .grid{grid-template-columns:340px 1fr} }
+
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);border-radius:14px;padding:20px;border:1px solid rgba(255,255,255,0.02)}
+    .section-title{color:var(--gold-2);font-weight:900;margin-bottom:10px}
+    .section-content{color:#dcdcdc;line-height:1.8}
+    .skill{display:inline-block;background:rgba(255,255,255,0.02);padding:8px 10px;border-radius:999px;font-weight:700;margin:6px 6px 0 0;color:#ddd}
+    .project-link{color:var(--gold-2);font-weight:800;margin-top:8px;display:inline-block}
+
+    footer{margin-top:46px;text-align:center;color:#bdbdbd}
+    footer .by{color:var(--gold-2);font-weight:800}
+
+    .cursor{display:inline-block;width:3px;height:1.05em;background:var(--gold-2);margin-right:6px;vertical-align:middle;animation:blink 1s steps(2) infinite}
+    @keyframes blink{0%,50%{opacity:1}51%,100%{opacity:0}}
+
+    @media print{
+      .nav{display:none}
+      body{background:white;color:black}
+      .bg-wrap{display:none}
+      .card{background:transparent;border:none;box-shadow:none}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- animated code bg -->
+  <div class="bg-wrap" aria-hidden="true"></div>
+
+  <!-- progress bar -->
+  <div id="progress" aria-hidden="true"></div>
+
+  <!-- Nav -->
+  <nav class="nav" role="navigation" aria-label="تنقل">
+    <span class="brand">Mohamed Ibrahim</span>
+    <a href="#about">نبذة</a>
+    <a href="#projects">المشاريع</a>
+    <a href="#contact">تواصل</a>
+  </nav>
+
+  <div class="container" role="main">
+
+    <!-- Header card -->
+    <header class="header-card" role="banner" aria-labelledby="mainTitle">
+
+      <div class="avatar" aria-hidden="true">
+        <div id="avatarFallback" class="avatar-fallback">م</div>
+      </div>
+
+      <div class="title">
+        <h1 id="mainTitle">
+          <span id="typedName"></span><span class="cursor"></span>
+        </h1>
+        <span class="subtitle">Web Interface Developer</span>
+
+        <p class="muted section-content" style="margin-top:14px">
+          طالب في الصف الثاني الثانوي وشغوف بتطوير واجهات المواقع. أطبّق عمليًا ما أتعلمه في مشاريع فعلية — آخرها:
+          <span class="project-link">elnabawey.com</span>
+        </p>
+
+        <div class="actions" aria-hidden="true">
+          <a class="btn" href="#projects">شوف المشاريع</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main grid -->
+    <section class="grid" aria-label="السيرة الذاتية">
+
+      <!-- right column -->
+      <aside class="card" aria-labelledby="personalTitle">
+        <h3 id="personalTitle" class="section-title">المعلومات الشخصية</h3>
+        <div class="section-content">
+          <p><strong>العمر:</strong> 17 سنة</p>
+          <p><strong>الصف:</strong> الثاني الثانوي</p>
+        </div>
+        <hr style="margin:12px 0;border:none;border-top:1px solid rgba(255,255,255,0.03)">
+        <h3 class="section-title">المهارات الأساسية</h3>
+        <div>
+          <span class="skill">HTML</span><span class="skill">CSS</span><span class="skill">JavaScript</span><span class="skill">React</span><span class="skill">Git</span>
+        </div>
+        <hr style="margin:12px 0;border:none;border-top:1px solid rgba(255,255,255,0.03)">
+        <h3 class="section-title">التواصل</h3>
+        <div class="section-content">
+          <p><strong>البريد:</strong> <a href="mailto:mo6988676@gmail.com" style="color:var(--muted);text-decoration:underline">mo6988676@gmail.com</a></p>
+          <p><strong>الهاتف:</strong> <span style="color:var(--muted)">01022644663</span></p>
+          <p><strong>الموقع:</strong> <a href="https://elnabawey.com" target="_blank" rel="noopener" style="color:var(--gold-2);font-weight:800">elnabawey.com</a></p>
+          <p><strong>Facebook:</strong> <a href="https://www.facebook.com/mohamed.ibrahim.gamal.2025/?locale=ar_AR" target="_blank" style="color:var(--gold-2);font-weight:800">Mohamed Ibrahim</a></p>
+        </div>
+      </aside>
+
+      <!-- left column -->
+      <div>
+        <article id="about" class="card" aria-labelledby="aboutTitle">
+          <h3 id="aboutTitle" class="section-title">نبذة عني</h3>
+          <p class="section-content">
+            أنا طالب ولدي شغف كبير بتطوير واجهات المواقع. أفضّل الشغل العملي وتحويل التصاميم إلى واجهات سلسة وسريعة
+            وأعمل على تحسين مهاراتي باستمرار من خلال مشاريع تطبيقية حقيقية.
+          </p>
+        </article>
+
+        <article id="projects" class="card" aria-labelledby="projectsTitle" style="margin-top:18px">
+          <h3 id="projectsTitle" class="section-title">المشاريع</h3>
+          <div class="section-content" style="margin-top:8px">
+            <h4 style="margin:0;font-weight:900;color:#fff">منصة النبوي في اللغة العربية</h4>
+            <p style="margin-top:8px;color:#d6d6d6;line-height:1.7">موقع تعليمي لعرض الفيديوهات والكتب الخاصة بالأستاذ أحمد النبوي. قمت ببناء صفحات لفيديوهات وتنظيم عرض الكتب.</p>
+            <p style="margin-top:10px;color:var(--gold-2);font-weight:800">elnabawey.com</p>
+            <a href="https://elnabawey.com" style="color:var(--gold-2);font-weight:800;display:inline-block;margin-top:8px" target="_blank" rel="noopener">زيارة المشروع</a>
+          </div>
+        </article>
+
+        <article id="contact" class="card" aria-labelledby="contactTitle" style="margin-top:18px">
+          <h3 id="contactTitle" class="section-title">تعليم وملاحظات</h3>
+          <p class="section-content">أنهيت دورة Front-End وأعمل الآن على تطبيق مهاراتي في مشاريع حقيقية. هذه السيرة تعرض مشاريعي وإنجازاتي خلال الدورة.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- footer -->
+    <footer>
+      <p id="footerText">© تم التصميم بواسطة <span class="by">محمد إبراهيم</span> <span id="year"></span></p>
+    </footer>
+
+  </div>
+
+  <!-- JS -->
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    (function(){
+      const name = 'Mohamed Ibrahim';
+      const el = document.getElementById('typedName');
+      let i=0;
+      function step(){
+        if(i < name.length){
+          el.textContent += name[i++];
+          setTimeout(step, 70 + Math.random()*40);
+        }
+      }
+      setTimeout(step, 350);
+    })();
+
+    const progress = document.getElementById('progress');
+    function updateProgress(){
+      const h = document.documentElement;
+      const full = h.scrollHeight - h.clientHeight;
+      const scrolled = h.scrollTop || document.body.scrollTop;
+      const pct = (scrolled / full) * 100;
+      progress.style.width = Math.min(Math.max(pct,0),100) + '%';
+    }
+    window.addEventListener('scroll', updateProgress, {passive:true});
+    window.addEventListener('resize', updateProgress);
+    updateProgress();
+  </script>
+
+  <script>
+    // generate moving code lines for background
+    const bg = document.querySelector('.bg-wrap');
+    const codeLines = [];
+    const codeChars = "const x = 42; let y = 'hello'; function test(){console.log(x+y);}".split('');
+    for(let i=0;i<50;i++){
+      const line = document.createElement('div');
+      line.className='code-line';
+      line.style.top = `${Math.random()*100}%`;
+      line.style.left = `${Math.random()*100}%`;
+      line.style.fontSize = `${8+Math.random()*8}px`;
+      line.style.opacity = Math.random()*0.6+0.2;
+      line.textContent = codeChars.sort(()=>Math.random()-0.5).join('');
+      line.style.animationDuration = `${10+Math.random()*10}s`;
+      bg.appendChild(line);
+      codeLines.push(line);
+    }
+  </script>
+</body>
+</html>
